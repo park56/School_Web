@@ -1,0 +1,13 @@
+doctype html 
+html 
+    head 
+    body 
+        title Hello 
+    body 
+        h1 Hello!! #{name}
+        h2= value 
+        - const message = 'Hi'
+        h2 message: #{message}
+        ul 
+            each i in array 
+                li=i #{i.id} #{i.value}
