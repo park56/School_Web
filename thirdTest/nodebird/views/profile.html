@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="timeline">
+    <div class="followings half">
+      <h2>팔로잉 목록</h2>
+      {% if user.Followings %}
+        {% for following in user.Followings %}
+        <ul>
+          <li>
+            <div> {{following.nick}} </div>
+            <div class="unfollow-btn" data-following-id="{{ following.id }}">팔로우 취소</div>
+          </li>
+        </ul>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="followers half">
+      <h2>팔로워 목록</h2>
+      {% if user.Followers %}
+        {% for follower in user.Followers %}
+          <div>{{follower.nick}}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+     // 팔로우 취소 버튼 클릭 이벤트 처리
+     const unfollowButtons = document.querySelectorAll('.unfollow-btn');
+     unfollowButtons.forEach(button => {
+         button.addEventListener('click', () => {
+             const followingId = button.dataset.followingId;
+             unfollowUser(followingId);
+         });
+     });
+ 
+     // 서버로 팔로우 취소 데이터 전송
+     function unfollowUser(followingId) {
+         const url = '/api/unfollow';  // 팔로우 취소 API 엔드포인트 URL
+         const data = { following_id: followingId };
+ 
+         fetch(url, {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(data),
+         })
+         .then(response => {
+             // 서버 응답 처리
+             if (response.ok) {
+                 // 성공적으로 팔로우 취소되었을 때 실행할 동작
+             } else {
+                 // 팔로우 취소 실패 또는 에러가 발생했을 때 실행할 동작
+             }
+         })
+         .catch(error => {
+             // 오류 처리
+             console.error('Error:', error);
+         });
+     }
+  </script>
+{% endblock %}
